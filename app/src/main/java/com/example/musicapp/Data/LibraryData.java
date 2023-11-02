@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 public class LibraryData {
@@ -30,7 +31,6 @@ public class LibraryData {
     }
     public static List<Book> getHisList(){
         List<Book>bookList = HistoryDataBase.getInstance(MainActivity.getContext()).historyDao().getBookArray();
-        Collections.reverse(bookList);
         return bookList;
     }
     public static List<Book> getMusicianData(){
@@ -42,6 +42,7 @@ public class LibraryData {
                 musicianList.add(new Book(musicianListOld.get(i).getId(),"musician",musicianListOld.get(i).getImageId(),musicianListOld.get(i).getName()));
             }
         }
+
         return musicianList;
     }
 }

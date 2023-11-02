@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +23,8 @@ import com.example.musicapp.R;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 //Chưa làm =))
@@ -53,9 +56,10 @@ public class LibraryFragment extends Fragment {
     private static List<Category> getListCategory() {
 
         List<Book> musicianList =LibraryData.getMusicianData();
-        List<Book>musicList = LibraryData.getFavlist();
-        List<Book>historyList = LibraryData.getHisList();
+        List<Book> musicList = LibraryData.getFavlist();
+        List<Book> historyList = LibraryData.getHisList();
 
+        Collections.reverse(historyList);
 
         List<Category> categories = new ArrayList<>();
         categories.add(new Category("Ca Sĩ",musicianList));

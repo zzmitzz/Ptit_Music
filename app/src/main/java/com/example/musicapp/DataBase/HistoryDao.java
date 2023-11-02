@@ -6,6 +6,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 
 import com.example.musicapp.Class.Book;
+import com.example.musicapp.Class.Music;
 
 import java.util.List;
 
@@ -16,7 +17,8 @@ public interface HistoryDao {
 
     @Query("SELECT * FROM history")
     List<Book> getBookArray();
-
+    @Query("SELECT * FROM history WHERE id = :id")
+    List<Book> checkExist(int id);
     @Delete
     void deleteBook(Book book);
 

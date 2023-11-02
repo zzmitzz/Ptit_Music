@@ -7,10 +7,11 @@ import androidx.room.PrimaryKey;
 import java.io.Serializable;
 
 @Entity(tableName = "history")
-public class Book implements Serializable {
-    @PrimaryKey(autoGenerate = true)
-    private int key;
-    private int id;
+public class Book implements Serializable,Comparable<Book> {
+
+    @PrimaryKey
+    @NonNull
+    private int id ;
     private String category;
     private int resourceId;
     private String title;
@@ -23,19 +24,13 @@ public class Book implements Serializable {
         this.resourceId = resourceId;
         this.title = title;
     }
-    public Book(String category, int resourceId, String title) {
-        this.category = category;
-        this.resourceId = resourceId;
-        this.title = title;
-    }
+//    public Book(String category, int resourceId, String title) {
+//        this.category = category;
+//        this.resourceId = resourceId;
+//        this.title = title;
+//    }
 
-    public int getKey() {
-        return key;
-    }
 
-    public void setKey(int key) {
-        this.key = key;
-    }
 
     public int getId() {
         return id;
@@ -67,5 +62,19 @@ public class Book implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+//    @Override
+//    public boolean equals(Object obj){
+//        if (!(obj instanceof Book))
+//            return false;
+//        if (obj == this)
+//            return true;
+//        Book rhs = (Book) obj;
+//        return this.title.equals(((Book) obj).title);
+//
+//    }
+    @Override
+    public int compareTo(Book book) {
+        return 0;
     }
 }
