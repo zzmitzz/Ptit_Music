@@ -15,6 +15,7 @@ public class Book implements Serializable,Comparable<Book> {
     private String category;
     private int resourceId;
     private String title;
+
     public Book(){
 
     }

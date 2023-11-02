@@ -181,6 +181,7 @@ public class PlayMusicActivity extends AppCompatActivity {
 
         if(checkContains(book)) {
             HistoryDataBase.getInstance(this).historyDao().deleteBook(book);
+
         }
         HistoryDataBase.getInstance(this).historyDao().insertHistory(book);
 
