@@ -177,16 +177,12 @@ public class PlayMusicActivity extends AppCompatActivity {
 
     private void addHistory() {
         Music music = arrayMusic.get(position);
-        Book book = new Book(music.getId(),"hisMusic",music.getHinhNen(), music.getTenNhac());
-
+        Book book = new Book(music.getId(),"hisMusic",music.getHinhNen(), music.getTenNhac(),System.currentTimeMillis());
         if(checkContains(book)) {
             HistoryDataBase.getInstance(this).historyDao().deleteBook(book);
-
         }
         HistoryDataBase.getInstance(this).historyDao().insertHistory(book);
-
         List<Book> list = HistoryDataBase.getInstance(this).historyDao().getBookArray();
-
         if (list.size() > 10){
             HistoryDataBase.getInstance(this).historyDao().deleteBook(list.get(0));
         }

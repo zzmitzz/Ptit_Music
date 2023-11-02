@@ -15,7 +15,7 @@ public interface HistoryDao {
     @Insert
     void insertHistory(Book book);
 
-    @Query("SELECT * FROM history")
+    @Query("SELECT * FROM history ORDER BY playHisTime DESC")
     List<Book> getBookArray();
     @Query("SELECT * FROM history WHERE id = :id")
     List<Book> checkExist(int id);

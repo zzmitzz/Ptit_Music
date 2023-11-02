@@ -15,6 +15,7 @@ public class Book implements Serializable,Comparable<Book> {
     private String category;
     private int resourceId;
     private String title;
+    private long playHisTime;
 
     public Book(){
 
@@ -25,13 +26,21 @@ public class Book implements Serializable,Comparable<Book> {
         this.resourceId = resourceId;
         this.title = title;
     }
-//    public Book(String category, int resourceId, String title) {
-//        this.category = category;
-//        this.resourceId = resourceId;
-//        this.title = title;
-//    }
+    public Book(int id, String category, int resourceId, String title,long playHisTime) {
+        this.id = id;
+        this.category = category;
+        this.resourceId = resourceId;
+        this.title = title;
+        this.playHisTime = playHisTime;
+    }
 
+    public long getPlayHisTime() {
+        return playHisTime;
+    }
 
+    public void setPlayHisTime(long playHisTime) {
+        this.playHisTime = playHisTime;
+    }
 
     public int getId() {
         return id;
