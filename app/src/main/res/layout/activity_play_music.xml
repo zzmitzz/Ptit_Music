@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_play_music"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0F0817"
+    android:padding="10dp"
+    android:textAlignment="center"
+    tools:context=".Activity.PlayMusicActivity">
+
+    <!-- Auto layout, variables, and unit scale are not yet supported -->
+
+    <TextView
+        android:id="@+id/headMusicName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Music Name" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/musicPlayImage"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_below="@id/headMusicName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.30"
+        tools:src="@drawable/ms08_demons"></de.hdodenhof.circleimageview.CircleImageView>
+
+    <TextView
+        android:id="@+id/runTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/seekBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/musicPlayImage"
+        tools:text="00:00" />
+
+    <TextView
+        android:id="@+id/totalTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@id/seekBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/musicPlayImage"
+        tools:text="00:00" />
+
+    <ImageButton
+        android:id="@+id/playPauseButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+
+        android:src="@drawable/ic_play"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/seekBar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.1"
+        />
+
+    <ImageButton
+        android:id="@+id/preButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/ic_pre"
+        app:layout_constraintBottom_toBottomOf="@id/playPauseButton"
+        app:layout_constraintEnd_toStartOf="@id/playPauseButton"
+        app:layout_constraintTop_toTopOf="@id/playPauseButton" />
+
+    <ImageButton
+        android:id="@+id/nextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/ic_next"
+        app:layout_constraintBottom_toBottomOf="@id/playPauseButton"
+
+        app:layout_constraintStart_toEndOf="@id/playPauseButton"
+        app:layout_constraintTop_toTopOf="@id/playPauseButton" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/runTime"
+        android:progressTint="#FFFFFF"
+        android:thumbTint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/musicPlayImage"
+        app:layout_constraintVertical_bias="0.201"
+        tools:layout_editor_absoluteX="30dp" />
+
+    <ImageButton
+        android:id="@+id/replay_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@null"
+        android:src="@drawable/ic_replay_1"
+        app:layout_constraintBottom_toBottomOf="@id/preButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/nextButton"
+        app:layout_constraintTop_toTopOf="@id/preButton" />
+
+    <ImageButton
+        android:id="@+id/like_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/ic_fixed_favorite"
+        app:layout_constraintBottom_toBottomOf="@id/preButton"
+        app:layout_constraintEnd_toStartOf="@id/preButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/preButton"></ImageButton>
+
+    <TextView
+        android:id="@+id/Lyrics_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lyrics"
+        android:textColor="@color/gray"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/expand_lyrics"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"></TextView>
+
+    <ImageButton
+        android:id="@+id/expand_lyrics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+
+        android:src="@drawable/chevron_down"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+    </ImageButton>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
