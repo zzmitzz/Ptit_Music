@@ -107,7 +107,7 @@ public class SearchFragment extends Fragment{
 
     // Phương thức để mở trang chơi âm nhạc
     private void openPlayPage(int i){
-        PlayMusicActivity.setArrayMusic(arrayMusic);
+        PlayMusicFragment.setArrayMusic(arrayMusic);
         it = new Intent(getActivity(),PlayMusicActivity.class);
         it.putExtra("position",i + "");// Truyền vị trí âm nhạc được chọn cho trang chơi âm nhạc
         startActivity(it);

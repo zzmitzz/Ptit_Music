@@ -11,6 +11,8 @@ import com.example.musicapp.Data.MusicData;
 import com.example.musicapp.Data.MusicianData;
 import com.example.musicapp.R;
 
+import java.io.IOException;
+
 public class FlashActivity extends AppCompatActivity {
 
     private static Context context;
@@ -25,7 +27,11 @@ public class FlashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_flash);
         context = this;
 
-        MusicData.setArrayMusic();
+        try {
+            MusicData.setArrayMusic();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         MusicianData.setListMusician();
 
         Handler handler = new Handler();

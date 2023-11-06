@@ -1,8 +1,18 @@
 package com.example.musicapp.Class;
 
+import android.content.Context;
+import android.content.res.AssetManager;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 @Entity(tableName = "music")
 public class Music implements Comparable<Music>{
@@ -14,17 +24,20 @@ public class Music implements Comparable<Music>{
     private int hinhNen; // Tài liệu hình ảnh đại diện cho bản nhạc
     private int sourceMp3; // Tài liệu âm thanh của bản nhạc
     private boolean love;
+
+    private String fileSource;
     private String tenNhacFormat;
     private String caSiFormat;
 
     // Constructor (Hàm khởi tạo)
-    public Music(String tenNhac, String caSi, int hinhNen, int sourceMp3) {
+    public Music(String tenNhac, String caSi, int hinhNen, int sourceMp3, String fileSource)  {
         this.tenNhac = tenNhac;
         this.caSi = caSi;
         this.hinhNen = hinhNen;
         this.sourceMp3 = sourceMp3;
         this.tenNhacFormat = NlpUtils.removeAccent(tenNhac).toLowerCase();
         this.caSiFormat = NlpUtils.removeAccent(caSi).toLowerCase();
+        this.fileSource = fileSource;
     }
 
 
@@ -81,5 +94,9 @@ public class Music implements Comparable<Music>{
     public int compareTo(Music music) {
         // Sử dụng NlpUtils.removeAccent để loại bỏ dấu và thực hiện so sánh theo tên không dấu
         return NlpUtils.removeAccent(this.getTenNhac()).compareTo(NlpUtils.removeAccent(music.getTenNhac()));
+    }
+
+    public String getFileSource() {
+        return fileSource;
     }
 }

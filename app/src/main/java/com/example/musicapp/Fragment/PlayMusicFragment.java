@@ -1,53 +1,46 @@
-package com.example.musicapp.Activity;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
+package com.example.musicapp.Fragment;
 
 import android.content.Intent;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+
 import android.os.Handler;
-import android.util.Log;
 import android.view.GestureDetector;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.musicapp.Activity.LyricsActivity;
+import com.example.musicapp.Activity.MusicianPlaylistActivity;
 import com.example.musicapp.Class.Book;
 import com.example.musicapp.Class.Category;
 import com.example.musicapp.Class.Music;
 import com.example.musicapp.Data.LibraryData;
 import com.example.musicapp.Data.MusicData;
-import com.example.musicapp.DataBase.HistoryDao;
 import com.example.musicapp.DataBase.HistoryDataBase;
 import com.example.musicapp.DataBase.MusicDataBase;
-import com.example.musicapp.DataBase.MusicianDataBase;
-import com.example.musicapp.Fragment.HomeFragment;
-import com.example.musicapp.Fragment.LibraryFragment;
-import com.example.musicapp.Fragment.SearchFragment;
 import com.example.musicapp.R;
 
-import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class PlayMusicActivity extends AppCompatActivity {
+public class PlayMusicFragment extends Fragment {
     private ConstraintLayout playMusicLayout;
     private TextView musicName, runTime, totalTime;
     private CircleImageView musicImage;
@@ -66,14 +59,18 @@ public class PlayMusicActivity extends AppCompatActivity {
 
     // Phương thức để thiết lập danh sách nhạc
     public static void setArrayMusic(List<Music> arrayMusic) {
-        PlayMusicActivity.arrayMusic = arrayMusic;
+        PlayMusicFragment.arrayMusic = arrayMusic;
+    }
+    public PlayMusicFragment(MediaPlayer mediaPlayer){
+        this.mediaPlayer = mediaPlayer;
     }
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_play_music);
-        AnhXa();
+        View view = inflater.inflate(R.layout.fragment_play_music,container,false);
+        AnhXa(view);
         setAnimation();
         getData();
         setMusicPlayImage();
@@ -165,7 +162,7 @@ public class PlayMusicActivity extends AppCompatActivity {
             }
         });
         // Thiết lập Gesture Detector để nhận diện cử chỉ vuốt trên màn hình
-        gestureDetector = new GestureDetector(this, new MyGesture());
+        gestureDetector = new GestureDetector(getContext(), new MyGesture());
         playMusicLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -173,23 +170,24 @@ public class PlayMusicActivity extends AppCompatActivity {
                 return true;
             }
         });
+        return view;
     }
 
     private void addHistory() {
         Music music = arrayMusic.get(position);
         Book book = new Book(music.getId(),"hisMusic",music.getHinhNen(), music.getTenNhac(),System.currentTimeMillis());
         if(checkContains(book)) {
-            HistoryDataBase.getInstance(this).historyDao().deleteBook(book);
+            HistoryDataBase.getInstance(getContext()).historyDao().deleteBook(book);
         }
-        HistoryDataBase.getInstance(this).historyDao().insertHistory(book);
-        List<Book> list = HistoryDataBase.getInstance(this).historyDao().getBookArray();
+        HistoryDataBase.getInstance(getContext()).historyDao().insertHistory(book);
+        List<Book> list = HistoryDataBase.getInstance(getContext()).historyDao().getBookArray();
         if (list.size() > 10){
-            HistoryDataBase.getInstance(this).historyDao().deleteBook(list.get(0));
+            HistoryDataBase.getInstance(getContext()).historyDao().deleteBook(list.get(0));
         }
         setAdapter();
     }
     private boolean checkContains(Book book){
-        List<Book> list = HistoryDataBase.getInstance(this).historyDao().checkExist(book.getId());
+        List<Book> list = HistoryDataBase.getInstance(getContext()).historyDao().checkExist(book.getId());
         return list != null && !list.isEmpty();
     }
 
@@ -207,24 +205,24 @@ public class PlayMusicActivity extends AppCompatActivity {
         Music music = arrayMusic.get(position);
         if (music.getLove()){
             music.setLove(false);
-            MusicDataBase.getInstance(this).musicDao().updateMusic(music);
+            MusicDataBase.getInstance(getContext()).musicDao().updateMusic(music);
             favBtn.setImageResource(R.drawable.ic_favorite_border);
             setAdapter();
-            Toast.makeText(this,"Đã xóa khỏi mục yêu thích",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(),"Đã xóa khỏi mục yêu thích",Toast.LENGTH_SHORT).show();
         }
         else{
             music.setLove(true);
-            MusicDataBase.getInstance(this).musicDao().updateMusic(music);
+            MusicDataBase.getInstance(getContext()).musicDao().updateMusic(music);
             favBtn.setImageResource(R.drawable.ic_favorite);
             setAdapter();
-            Toast.makeText(this,"Đã thêm vào mục yêu thích",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(),"Đã thêm vào mục yêu thích",Toast.LENGTH_SHORT).show();
         }
     }
 
     private void setAdapter() {
-        SearchFragment.setAdapter(MusicDataBase.getInstance(this).musicDao().getMusicArray());
-        MusicianPlaylistActivity.setAdapter(MusicData.musicianList(arrayMusic.get(position).getCaSi(),MusicDataBase.getInstance(this).musicDao().getMusicArray()));
-        List<Book> musicianList =LibraryData.getMusicianData();
+        SearchFragment.setAdapter(MusicDataBase.getInstance(getContext()).musicDao().getMusicArray());
+        MusicianPlaylistActivity.setAdapter(MusicData.musicianList(arrayMusic.get(position).getCaSi(),MusicDataBase.getInstance(getContext()).musicDao().getMusicArray()));
+        List<Book> musicianList = LibraryData.getMusicianData();
         List<Book>musicList = LibraryData.getFavlist();
         List<Book>historyList = LibraryData.getHisList();
         List<Category> categories = new ArrayList<>();
@@ -280,7 +278,7 @@ public class PlayMusicActivity extends AppCompatActivity {
 
     // Phương thức để thiết lập rotate animation
     private void setAnimation() {
-        animation = AnimationUtils.loadAnimation(this,R.anim.rotate);
+        animation = AnimationUtils.loadAnimation(getContext(),R.anim.rotate);
     }
 
     // Phương thức để cập nhật thời gian hiện tại của bài hát đang phát
@@ -315,7 +313,7 @@ public class PlayMusicActivity extends AppCompatActivity {
                         mediaPlayer.start();
                     }
                 });
-                handler.postDelayed(this,500);
+                handler.postDelayed(this::run,500);
             }
         },100);
     }
@@ -326,7 +324,7 @@ public class PlayMusicActivity extends AppCompatActivity {
         seekBar.setMax(mediaPlayer.getDuration());
     }
     private void khoiTaoMediaPlayer(){
-        mediaPlayer = MediaPlayer.create(PlayMusicActivity.this,arrayMusic.get(position).getSourceMp3());
+        mediaPlayer = MediaPlayer.create(getContext(),arrayMusic.get(position).getSourceMp3());
         // Khởi tạo MediaPlayer để phát nhạc từ tệp âm thanh tại vị trí hiện tại trong danh sách nhạc
     }
     private void setMusicName() {
@@ -341,34 +339,33 @@ public class PlayMusicActivity extends AppCompatActivity {
 
     private void getData() {
         // Lấy dữ liệu vị trí bài hát được chọn từ Intent
-        Intent it = getIntent();
+        Intent it = getActivity().getIntent();
         position = Integer.parseInt(it.getStringExtra("position"));
     }
-    private void AnhXa() {
+    private void AnhXa(View view) {
         // Ánh xạ các thành phần giao diện
-        playMusicLayout = findViewById(R.id.layout_play_music);
-        musicName = findViewById(R.id.headMusicName);
-        runTime = findViewById(R.id.runTime);
-        totalTime = findViewById(R.id.totalTime);
-        musicImage = findViewById(R.id.musicPlayImage);
-        seekBar = findViewById(R.id.seekBar);
-        playPauseButton = findViewById(R.id.playPauseButton);
-        preButton = findViewById(R.id.preButton);
-        nextButton = findViewById(R.id.nextButton);
-        replayButton = findViewById(R.id.replay_button);
-        favBtn = findViewById(R.id.like_button);
+        playMusicLayout = view.findViewById(R.id.layout_play_music);
+        musicName = view.findViewById(R.id.headMusicName);
+        runTime = view.findViewById(R.id.runTime);
+        totalTime = view.findViewById(R.id.totalTime);
+        musicImage = view.findViewById(R.id.musicPlayImage);
+        seekBar = view.findViewById(R.id.seekBar);
+        playPauseButton = view.findViewById(R.id.playPauseButton);
+        preButton = view.findViewById(R.id.preButton);
+        nextButton = view.findViewById(R.id.nextButton);
+        replayButton = view.findViewById(R.id.replay_button);
+        favBtn = view.findViewById(R.id.like_button);
     }
     @Override
-    public void onBackPressed() {
-        // Dừng phát nhạc khi người dùng bấm nút "Back"
-        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-            mediaPlayer.stop();
-        }
-        super.onBackPressed();
+    public void onDestroy() {
+        mediaPlayer.stop();
+        super.onDestroy();
     }
     class MyGesture extends GestureDetector.SimpleOnGestureListener{
+
         @Override
         public boolean onFling(@NonNull MotionEvent e1, @NonNull MotionEvent e2, float velocityX, float velocityY) {
+
             // Xử lý cử chỉ vuốt trái hoặc phải trên màn hình
             if(e2.getX() - e1.getX() > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD){
                 nextSong();// Chuyển đến bài hát tiếp theo khi vuốt sang phải
@@ -376,7 +373,15 @@ public class PlayMusicActivity extends AppCompatActivity {
             if(e1.getX() - e2.getX() > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD){
                 preSong();// Chuyển đến bài hát trước đó khi vuốt sang trái
             }
+            if(e1.getY() - e2.getY() > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD){
+                Intent it = new Intent(getContext(), LyricsActivity.class);
+                it.putExtra("nameFile",arrayMusic.get(position).getFileSource());
+                startActivity(it);
+            }
             return super.onFling(e1, e2, velocityX, velocityY);
         }
+    }
+    public MediaPlayer getMediaPlayer(){
+        return this.mediaPlayer;
     }
 }

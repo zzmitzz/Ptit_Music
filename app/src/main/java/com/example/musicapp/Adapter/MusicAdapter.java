@@ -20,6 +20,7 @@ import com.example.musicapp.Activity.MainActivity;
 import com.example.musicapp.Activity.PlayMusicActivity;
 import com.example.musicapp.Data.MusicData;
 import com.example.musicapp.DataBase.MusicDataBase;
+import com.example.musicapp.Fragment.PlayMusicFragment;
 import com.example.musicapp.Fragment.SearchFragment;
 import com.example.musicapp.Class.Music;
 import com.example.musicapp.Class.NlpUtils;
@@ -76,13 +77,13 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHol
         Intent it = new Intent(context , PlayMusicActivity.class);
         List<Music>list = MusicDataBase.getInstance(context).musicDao().getMusicArray();
         if(context.equals(MainActivity.getContext())){
-            PlayMusicActivity.setArrayMusic(list);
+            PlayMusicFragment.setArrayMusic(list);
             it.putExtra("position", MusicData.getPosition(music.getId(),list) + "");
             context.startActivity(it);
         }
         else{
             list = MusicData.musicianList(music.getCaSi(),list);
-            PlayMusicActivity.setArrayMusic(list);
+            PlayMusicFragment.setArrayMusic(list);
             it.putExtra("position",MusicData.getPosition(music.getId(),list) + "");
             context.startActivity(it);
         }
