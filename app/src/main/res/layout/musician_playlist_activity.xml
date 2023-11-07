@@ -1,18 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/layout_play_list"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#2E2A2A"
     tools:context= ".Activity.MusicianPlaylistActivity"
-    android:background="#454343"
     android:orientation="vertical"
     >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
+        <ImageView
+            android:id="@+id/mc_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:alpha="0.7"
+            android:src="@drawable/mc02_denvau2"/>
 
+        <ImageButton
+            android:id="@+id/plalist_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="@null"
+            android:src="@drawable/ic_back_arrow" />
+        <RelativeLayout
+            android:id="@+id/button_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="140dp">
+            <ImageButton
+                android:id="@+id/btn_mc_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_play_red"
+                android:layout_marginLeft="30dp"
+                android:background="@null" />
+            <ImageButton
+                android:id="@+id/fav_musician"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_fixed_favorite_border"
+                android:background="@null"
+                android:layout_toRightOf="@id/btn_mc_play"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"/>
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/text_name"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="Musician Name"
+            android:textStyle="bold"
+            android:textSize="28dp"
+            android:layout_marginLeft="30dp"
+            android:layout_below="@id/button_layout"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/white"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/border"/>
+    </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/play_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="0dp" />
+        android:layout_height="match_parent"/>
+
 </LinearLayout>

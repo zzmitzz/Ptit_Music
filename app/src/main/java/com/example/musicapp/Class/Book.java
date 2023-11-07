@@ -11,7 +11,7 @@ public class Book implements Serializable,Comparable<Book> {
 
     @PrimaryKey
     @NonNull
-    private int id ;
+    private String id ;
     private String category;
     private int resourceId;
     private String title;
@@ -20,13 +20,13 @@ public class Book implements Serializable,Comparable<Book> {
     public Book(){
 
     }
-    public Book(int id, String category, int resourceId, String title) {
+    public Book(String id, String category, int resourceId, String title) {
         this.id = id;
         this.category = category;
         this.resourceId = resourceId;
         this.title = title;
     }
-    public Book(int id, String category, int resourceId, String title,long playHisTime) {
+    public Book(String id, String category, int resourceId, String title,long playHisTime) {
         this.id = id;
         this.category = category;
         this.resourceId = resourceId;
@@ -42,11 +42,11 @@ public class Book implements Serializable,Comparable<Book> {
         this.playHisTime = playHisTime;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

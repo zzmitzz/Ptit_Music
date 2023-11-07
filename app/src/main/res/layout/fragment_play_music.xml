@@ -14,16 +14,41 @@
 
     <TextView
         android:id="@+id/headMusicName"
-        android:layout_width="match_parent"
+        android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
         android:textAlignment="center"
         android:textColor="#ffffff"
         android:textSize="20dp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Music Name" />
-
+    <ImageButton
+        android:id="@+id/like_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/ic_favorite"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/headMusicName"
+        android:layout_marginTop="19dp"
+        android:layout_marginLeft="18dp"/>
+    <ImageButton
+        android:id="@+id/down_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_down"
+        android:background="@null"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/headMusicName"
+        android:layout_marginTop="19dp"
+        android:layout_marginRight="18dp"/>
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/musicPlayImage"
         android:layout_width="300dp"
@@ -34,7 +59,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.30"
-        tools:src="@drawable/ms08_demons"></de.hdodenhof.circleimageview.CircleImageView>
+        tools:src="@drawable/ms08_demons"/>
 
     <TextView
         android:id="@+id/runTime"
@@ -117,17 +142,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/nextButton"
         app:layout_constraintTop_toTopOf="@id/preButton" />
-
     <ImageButton
-        android:id="@+id/like_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/shuffle_button"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
         android:background="@null"
-        android:src="@drawable/ic_fixed_favorite"
-        app:layout_constraintBottom_toBottomOf="@id/preButton"
+        android:src="@drawable/ic_shuffle"
+        app:layout_constraintBottom_toBottomOf="@id/nextButton"
+        app:layout_constraintTop_toTopOf="@id/nextButton"
         app:layout_constraintEnd_toStartOf="@id/preButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/preButton"></ImageButton>
+        app:layout_constraintStart_toStartOf="parent"/>
     <TextView
         android:id="@+id/Lyrics_text"
         android:layout_width="wrap_content"
@@ -138,7 +162,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/expand_lyrics"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"></TextView>
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <ImageButton
         android:id="@+id/expand_lyrics"

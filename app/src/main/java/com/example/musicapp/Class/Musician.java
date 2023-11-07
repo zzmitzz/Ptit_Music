@@ -1,19 +1,12 @@
 package com.example.musicapp.Class;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
 import java.io.Serializable;
-
-
-@Entity(tableName = "musician")
 public class Musician implements Serializable,Comparable<Musician> {
 
-    @PrimaryKey(autoGenerate = true)
-    private int id;
-    private int imageId; // ID của tài liệu hình ảnh đại diện cho nghệ sĩ
+    private String name;
+    private int imageId;
     private int imageBg;
-    private String name; // Tên của nghệ sĩ
+    private boolean love;
 
     // Constructor để khởi tạo một đối tượng Musician với thông tin hình ảnh và tên
     public Musician(int imageId, int imageBg, String name) {
@@ -21,12 +14,11 @@ public class Musician implements Serializable,Comparable<Musician> {
         this.imageBg = imageBg;
         this.name = name;
     }
-    //Các phương thức Getter và Setter
-    public int getId() {
-        return id;
+    public boolean isLove() {
+        return love;
     }
-    public void setId(int id) {
-        this.id = id;
+    public void setLove(boolean love) {
+        this.love = love;
     }
     public int getImageBg() {
         return imageBg;
@@ -46,7 +38,6 @@ public class Musician implements Serializable,Comparable<Musician> {
     public void setName(String name) {
         this.name = name;
     }
-
     @Override
     public int compareTo(Musician o) {
         return this.name.compareTo(o.name);

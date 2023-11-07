@@ -18,7 +18,7 @@ public interface HistoryDao {
     @Query("SELECT * FROM history ORDER BY playHisTime DESC")
     List<Book> getBookArray();
     @Query("SELECT * FROM history WHERE id = :id")
-    List<Book> checkExist(int id);
+    List<Book> checkExist(String id);
     @Delete
     void deleteBook(Book book);
 

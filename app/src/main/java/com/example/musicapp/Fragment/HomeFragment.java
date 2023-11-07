@@ -21,7 +21,6 @@ import com.example.musicapp.Activity.MainActivity;
 import com.example.musicapp.Adapter.MusicianAdapter;
 import com.example.musicapp.Class.Musician;
 import com.example.musicapp.Data.MusicianData;
-import com.example.musicapp.DataBase.MusicianDataBase;
 import com.example.musicapp.R;
 
 import java.util.Collections;
@@ -42,7 +41,7 @@ public class HomeFragment extends Fragment {
         adapter = new MusicianAdapter();
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
         rcvMusician.setLayoutManager(staggeredGridLayoutManager);
-        List<Musician> musicianList =  MusicianDataBase.getInstance(getActivity()).musicianDao().getMusicianArray();
+        List<Musician> musicianList = MusicianData.getRandomMusician();
         adapter.setData(getActivity(), musicianList);
         rcvMusician.setAdapter(adapter);
         return view;

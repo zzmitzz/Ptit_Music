@@ -5,10 +5,20 @@ import java.util.List;
 public class Category {
     private String nameCategory;
     private List<Book>books;
+    private String from;
 
-    public Category(String nameCategory, List<Book> books) {
+    public Category(String nameCategory, List<Book> books,String from) {
         this.nameCategory = nameCategory;
         this.books = books;
+        this.from = from;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
     }
 
     public String getNameCategory() {

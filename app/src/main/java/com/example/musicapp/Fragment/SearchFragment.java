@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,11 +28,17 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.musicapp.Activity.MusicianPlaylistActivity;
+import com.example.musicapp.Class.Book;
+import com.example.musicapp.Class.Category;
+import com.example.musicapp.Class.Item;
 import com.example.musicapp.Class.Music;
 import com.example.musicapp.Adapter.MusicAdapter;
 import com.example.musicapp.Activity.PlayMusicActivity;
 import com.example.musicapp.Class.NlpUtils;
-import com.example.musicapp.DataBase.MusicDataBase;
+import com.example.musicapp.Data.LibraryData;
+import com.example.musicapp.Data.MusicData;
+import com.example.musicapp.DataBase.ItemDataBase;
 import com.example.musicapp.R;
 
 import java.util.ArrayList;
@@ -55,14 +62,6 @@ public class SearchFragment extends Fragment{
     }
 
     // Phương thức getter để lấy danh sách âm nhạc
-    public static List<Music> getArrayMusic() {
-        return arrayMusic;
-    }
-
-    // Phương thức setter để cập nhật danh sách âm nhạc
-    public static void setArrayMusic(List<Music>newArrayMusic){
-        arrayMusic = newArrayMusic;
-    }
 
     public static void setAdapter(List<Music>musicList) {
         if(adapter != null){
@@ -77,8 +76,13 @@ public class SearchFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_search,container,false);
         context = getActivity();
         AnhXa(view);// Ánh xạ các thành phần trong layout
-        arrayMusic =  MusicDataBase.getInstance(getActivity()).musicDao().getMusicArray();// Lấy danh sách âm nhạc từ lớp MusicData
-        adapter = new MusicAdapter();
+        arrayMusic = MusicData.getArrayMusic();
+        adapter = new MusicAdapter(new MusicAdapter.ClickIcon() {
+            @Override
+            public void updateIcon(Music music) {
+                clickUpdateIcon(music);
+            }
+        });
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL,false);
         rcvMusic.setLayoutManager(linearLayoutManager);
         adapter.setData(getActivity(),arrayMusic);
@@ -97,10 +101,45 @@ public class SearchFragment extends Fragment{
         return view;// Trả về giao diện fragment đã được tạo
     }
 
+    private void clickUpdateIcon(Music music) {
+        if (music.isLove()){
+            music.setLove(false);
+            Item item = ItemDataBase.getInstance(getActivity()).itemDao().find(music.getId()).get(0);
+            item.setChosen(false);
+            ItemDataBase.getInstance(getActivity()).itemDao().updateItem(item);
+            setAdapter(music);
+            Toast.makeText(getContext(),"Đã xóa khỏi mục yêu thích",Toast.LENGTH_SHORT).show();
+        }
+        else{
+            music.setLove(true);
+            Item item = ItemDataBase.getInstance(getActivity()).itemDao().find(music.getId()).get(0);
+            item.setChosen(true);
+            ItemDataBase.getInstance(getActivity()).itemDao().updateItem(item);
+            setAdapter(music);
+            Toast.makeText(getContext(),"Đã thêm vào mục yêu thích",Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void setAdapter(Music music) {
+        SearchFragment.setAdapter(MusicData.getArrayMusic());
+        MusicianPlaylistActivity.setAdapter(MusicData.musicianList(music.getCaSi()));
+        List<Book> musicianList = LibraryData.getMusicianData();
+        List<Book>musicList = LibraryData.getFavlist();
+        List<Book>historyList = LibraryData.getHisList();
+        List<Category> categories = new ArrayList<>();
+        categories.add(new Category("Ca sĩ yêu thích",musicianList,"library"));
+        categories.add(new Category("Bài hát yêu thích",musicList,"library"));
+        categories.add(new Category("Lịch sử phát",historyList,"library"));
+        LibraryFragment.setAdapter(categories);
+    }
     private void handleSearchMusic() {
         String strKeyWord = edtSearch.getText().toString().trim();
         List<Music> musicList = new ArrayList<>();
-        musicList = MusicDataBase.getInstance(getActivity()).musicDao().searchMusic(NlpUtils.removeAccent(strKeyWord).toLowerCase());
+        for(Music music : MusicData.getArrayMusic()){
+            if( NlpUtils.removeAccent(music.getTenNhac()).toLowerCase().contains(NlpUtils.removeAccent(strKeyWord).toLowerCase())
+               || NlpUtils.removeAccent(music.getCaSi()).toLowerCase().contains(NlpUtils.removeAccent(strKeyWord).toLowerCase())){
+                musicList.add(music);
+            }
+        }
         adapter.setData(getActivity(),musicList);
         hideSoftKeyBoard();
     }

@@ -1,11 +1,13 @@
 package com.example.musicapp.Data;
 
 import com.example.musicapp.Activity.FlashActivity;
+import com.example.musicapp.Class.Item;
 import com.example.musicapp.Class.Musician;
-import com.example.musicapp.DataBase.MusicianDataBase;
+import com.example.musicapp.DataBase.ItemDataBase;
 import com.example.musicapp.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,30 +19,42 @@ public class MusicianData {
         musicianList = new ArrayList<>();
         musicianHashMap = new HashMap<>();
 
-        //Thêm nhạc sĩ bằng cách thêm Object ở đây, chạy xong rồi xóa đi cũng được vì nó lưu vào database rồi
-        musicianList.add(new Musician(R.drawable.mc03_imagedragons,R.drawable.mc03_imagedragons,"Imagine Dragons"));
         musicianList.add(new Musician(R.drawable.mc01_binz,R.drawable.mc01_binz2,"Binz"));
-        musicianList.add(new Musician(R.drawable.mc04_sontung,R.drawable.mc04_sontung,"Sơn Tùng M-TP"));
         musicianList.add(new Musician(R.drawable.mc02_denvau,R.drawable.mc02_denvau2,"Đen Vâu"));
-        //................
-        //................
+        musicianList.add(new Musician(R.drawable.mc03_imagedragons,R.drawable.mc03_imagedragons,"Imagine Dragons"));
+        musicianList.add(new Musician(R.drawable.mc04_sontung,R.drawable.mc04_sontung,"Sơn Tùng M-TP"));
 
 
-
-
-        for(Musician musician: musicianList){
-            if (!checkContains(musician)){
-                MusicianDataBase.getInstance(FlashActivity.getContext()).musicianDao().insertMusician(musician);
+        for(Musician musician : musicianList){
+            musician.setLove(false);
+            musicianHashMap.put(musician.getName(),musician);
+            if(!checkExist(musician.getName())){
+                ItemDataBase.getInstance(FlashActivity.getContext()).itemDao().insertItem(new Item(musician.getName(), false));
             }
         }
-        musicianList = MusicianDataBase.getInstance(FlashActivity.getContext()).musicianDao().getMusicianArray();
-        for(Musician musician: musicianList){
-            musicianHashMap.put(musician.getName(),musician);
+        List<Item>list = ItemDataBase.getInstance(FlashActivity.getContext()).itemDao().getList();
+        for(Item item : list){
+            if (musicianHashMap.containsKey(item.getId())){
+                Musician musician = musicianHashMap.get(item.getId());
+                musician.setLove(item.isChosen());
+            }
         }
     }
-    private static boolean checkContains(Musician musician){
-        List<Musician> list = MusicianDataBase.getInstance(FlashActivity.getContext()).musicianDao().checkExist(musician.getName());
+    public static boolean checkExist(String id){
+        List<Item> list = ItemDataBase.getInstance(FlashActivity.getContext()).itemDao().find(id);
         return list != null && !list.isEmpty();
+    }
+    public static List<Musician> getRandomMusician(){
+        List<Musician> list = musicianList;
+        Collections.shuffle(list);
+        List<Musician> resList = new ArrayList<>();
+        for(int i = 0; i < Math.min(list.size(),6); i++){
+            resList.add(list.get(i));
+        }
+        return resList;
+    }
+    public static List<Musician> getMusicianList() {
+        return musicianList;
     }
     public static HashMap<String, Musician> getMusicianHashMap() {
         return musicianHashMap;

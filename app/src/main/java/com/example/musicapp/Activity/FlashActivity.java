@@ -27,11 +27,7 @@ public class FlashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_flash);
         context = this;
 
-        try {
-            MusicData.setArrayMusic();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        MusicData.setArrayMusic();
         MusicianData.setListMusician();
 
         Handler handler = new Handler();

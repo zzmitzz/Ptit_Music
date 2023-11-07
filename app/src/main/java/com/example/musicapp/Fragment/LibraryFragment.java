@@ -38,12 +38,10 @@ public class LibraryFragment extends Fragment {
         List<Book> musicList = LibraryData.getFavlist();
         List<Book> historyList = LibraryData.getHisList();
 
-        Collections.reverse(historyList);
-
         List<Category> categories = new ArrayList<>();
-        categories.add(new Category("Ca Sĩ", musicianList));
-        categories.add(new Category("Yêu thích", musicList));
-        categories.add(new Category("Lịch sử phát", historyList));
+        categories.add(new Category("Ca sĩ yêu thích", musicianList,"library"));
+        categories.add(new Category("Bài hát yêu thích", musicList,"library"));
+        categories.add(new Category("Lịch sử phát", historyList,"library"));
         return categories;
     }
 

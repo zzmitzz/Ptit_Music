@@ -11,19 +11,11 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.musicapp.Class.Book;
-import com.example.musicapp.Class.Music;
-import com.example.musicapp.Data.MusicData;
-import com.example.musicapp.Data.MusicianData;
-import com.example.musicapp.DataBase.HistoryDataBase;
-import com.example.musicapp.DataBase.MusicDataBase;
-import com.example.musicapp.DataBase.MusicianDao;
 import com.example.musicapp.Fragment.SearchFragment;
 import com.example.musicapp.R;
 import com.example.musicapp.Adapter.ViewPagerAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {

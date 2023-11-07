@@ -26,31 +26,31 @@ import com.example.musicapp.Activity.LyricsActivity;
 import com.example.musicapp.Activity.MusicianPlaylistActivity;
 import com.example.musicapp.Class.Book;
 import com.example.musicapp.Class.Category;
+import com.example.musicapp.Class.Item;
 import com.example.musicapp.Class.Music;
 import com.example.musicapp.Data.LibraryData;
 import com.example.musicapp.Data.MusicData;
 import com.example.musicapp.DataBase.HistoryDataBase;
-import com.example.musicapp.DataBase.MusicDataBase;
+import com.example.musicapp.DataBase.ItemDataBase;
 import com.example.musicapp.R;
 
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PlayMusicFragment extends Fragment {
     private ConstraintLayout playMusicLayout;
-    private TextView musicName, runTime, totalTime;
+    private TextView musicName, runTime, totalTime,txtLyric;
     private CircleImageView musicImage;
     private SeekBar seekBar;
-    private ImageButton playPauseButton,preButton,nextButton,replayButton,favBtn;
+    private ImageButton playPauseButton,preButton,nextButton,replayButton,favBtn,shuffleBtn,btnOpenLyric,backBtn;
     private MediaPlayer mediaPlayer;
     private Animation animation;
     private static List<Music> arrayMusic;
-    private Connection connection;
-    private String parentPage;
     private int position;
     private boolean replay = false;
     private GestureDetector gestureDetector;
@@ -161,6 +161,25 @@ public class PlayMusicFragment extends Fragment {
                 favBtnClick();
             }
         });
+        shuffleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shuffleMusic();
+            }
+        });
+        btnOpenLyric.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openLyricPage();
+            }
+        });
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+
         // Thiết lập Gesture Detector để nhận diện cử chỉ vuốt trên màn hình
         gestureDetector = new GestureDetector(getContext(), new MyGesture());
         playMusicLayout.setOnTouchListener(new View.OnTouchListener() {
@@ -172,6 +191,32 @@ public class PlayMusicFragment extends Fragment {
         });
         return view;
     }
+    private void openLyricPage(){
+        Intent it = new Intent(getContext(), LyricsActivity.class);
+        it.putExtra("nameFile",arrayMusic.get(position).getFileSource());
+        startActivity(it);
+    }
+    private void shuffleMusic() {
+        List<Music> resultList = new ArrayList<>();
+        List<Music> tmpList = new ArrayList<>();
+        for (int i = 0; i < arrayMusic.size(); i++){
+            if(i != position){
+                tmpList.add(arrayMusic.get(i));
+            }
+        }
+        Collections.shuffle(tmpList);
+        for (int i = 0 ; i < arrayMusic.size(); i++){
+            if(i== position){
+                resultList.add(arrayMusic.get(position));
+            }
+            if(i < tmpList.size()){
+                resultList.add(tmpList.get(i));
+            }
+        }
+        arrayMusic = resultList;
+        Toast.makeText(getActivity(),"Đã trộn nhạc",Toast.LENGTH_SHORT).show();
+    }
+
 
     private void addHistory() {
         Music music = arrayMusic.get(position);
@@ -193,7 +238,7 @@ public class PlayMusicFragment extends Fragment {
 
     private void setFavButton() {
         Music music = arrayMusic.get(position);
-        if (music.getLove()){
+        if (music.isLove()){
             favBtn.setImageResource(R.drawable.ic_favorite);
         }
         else{
@@ -203,16 +248,20 @@ public class PlayMusicFragment extends Fragment {
 
     private void favBtnClick() {
         Music music = arrayMusic.get(position);
-        if (music.getLove()){
+        if (music.isLove()){
             music.setLove(false);
-            MusicDataBase.getInstance(getContext()).musicDao().updateMusic(music);
+            Item item = ItemDataBase.getInstance(getActivity()).itemDao().find(music.getId()).get(0);
+            item.setChosen(false);
+            ItemDataBase.getInstance(getActivity()).itemDao().updateItem(item);
             favBtn.setImageResource(R.drawable.ic_favorite_border);
             setAdapter();
             Toast.makeText(getContext(),"Đã xóa khỏi mục yêu thích",Toast.LENGTH_SHORT).show();
         }
         else{
             music.setLove(true);
-            MusicDataBase.getInstance(getContext()).musicDao().updateMusic(music);
+            Item item = ItemDataBase.getInstance(getActivity()).itemDao().find(music.getId()).get(0);
+            item.setChosen(true);
+            ItemDataBase.getInstance(getActivity()).itemDao().updateItem(item);
             favBtn.setImageResource(R.drawable.ic_favorite);
             setAdapter();
             Toast.makeText(getContext(),"Đã thêm vào mục yêu thích",Toast.LENGTH_SHORT).show();
@@ -220,15 +269,15 @@ public class PlayMusicFragment extends Fragment {
     }
 
     private void setAdapter() {
-        SearchFragment.setAdapter(MusicDataBase.getInstance(getContext()).musicDao().getMusicArray());
-        MusicianPlaylistActivity.setAdapter(MusicData.musicianList(arrayMusic.get(position).getCaSi(),MusicDataBase.getInstance(getContext()).musicDao().getMusicArray()));
+        SearchFragment.setAdapter(MusicData.getArrayMusic());
+        MusicianPlaylistActivity.setAdapter(MusicData.musicianList(arrayMusic.get(position).getCaSi()));
         List<Book> musicianList = LibraryData.getMusicianData();
         List<Book>musicList = LibraryData.getFavlist();
         List<Book>historyList = LibraryData.getHisList();
         List<Category> categories = new ArrayList<>();
-        categories.add(new Category("Ca Sĩ",musicianList));
-        categories.add(new Category("Yêu thích",musicList));
-        categories.add(new Category("Lịch sử phát",historyList));
+        categories.add(new Category("Ca sĩ yêu thích",musicianList,"library"));
+        categories.add(new Category("Bài hát yêu thích",musicList,"library"));
+        categories.add(new Category("Lịch sử phát",historyList,"library"));
         LibraryFragment.setAdapter(categories);
     }
 
@@ -326,10 +375,16 @@ public class PlayMusicFragment extends Fragment {
     private void khoiTaoMediaPlayer(){
         mediaPlayer = MediaPlayer.create(getContext(),arrayMusic.get(position).getSourceMp3());
         // Khởi tạo MediaPlayer để phát nhạc từ tệp âm thanh tại vị trí hiện tại trong danh sách nhạc
+        runTime.setText("00:00");
     }
     private void setMusicName() {
-        // Đặt tên bài hát hiện tại lên giao diện
-        musicName.setText(arrayMusic.get(position).getTenNhac());
+        if(!arrayMusic.get(position).getTenNhac().startsWith(arrayMusic.get(position).getCaSi())){
+            musicName.setText( arrayMusic.get(position).getCaSi() + "  -  " + arrayMusic.get(position).getTenNhac());
+        }
+        else{
+            musicName.setText(arrayMusic.get(position).getTenNhac());
+        }
+        musicName.setSelected(true);
     }
 
     private void setMusicPlayImage() {
@@ -355,6 +410,9 @@ public class PlayMusicFragment extends Fragment {
         nextButton = view.findViewById(R.id.nextButton);
         replayButton = view.findViewById(R.id.replay_button);
         favBtn = view.findViewById(R.id.like_button);
+        shuffleBtn = view.findViewById(R.id.shuffle_button);
+        btnOpenLyric = view.findViewById(R.id.expand_lyrics);
+        backBtn = view.findViewById(R.id.down_arrow);
     }
     @Override
     public void onDestroy() {
@@ -374,9 +432,7 @@ public class PlayMusicFragment extends Fragment {
                 preSong();// Chuyển đến bài hát trước đó khi vuốt sang trái
             }
             if(e1.getY() - e2.getY() > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD){
-                Intent it = new Intent(getContext(), LyricsActivity.class);
-                it.putExtra("nameFile",arrayMusic.get(position).getFileSource());
-                startActivity(it);
+                openLyricPage();
             }
             return super.onFling(e1, e2, velocityX, velocityY);
         }
