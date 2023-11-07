@@ -1,6 +1,9 @@
 package com.example.musicapp.Fragment;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
@@ -8,13 +11,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
@@ -22,8 +29,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.musicapp.Activity.LyricsActivity;
 import com.example.musicapp.Activity.MusicianPlaylistActivity;
+import com.example.musicapp.Adapter.LyricsAdapter;
 import com.example.musicapp.Class.Book;
 import com.example.musicapp.Class.Category;
 import com.example.musicapp.Class.Item;
@@ -34,7 +41,7 @@ import com.example.musicapp.DataBase.HistoryDataBase;
 import com.example.musicapp.DataBase.ItemDataBase;
 import com.example.musicapp.R;
 
-import java.sql.Connection;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -170,7 +177,11 @@ public class PlayMusicFragment extends Fragment {
         btnOpenLyric.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openLyricPage();
+                try {
+                    openLyricPage();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -191,10 +202,20 @@ public class PlayMusicFragment extends Fragment {
         });
         return view;
     }
-    private void openLyricPage(){
-        Intent it = new Intent(getContext(), LyricsActivity.class);
-        it.putExtra("nameFile",arrayMusic.get(position).getFileSource());
-        startActivity(it);
+    private void openLyricPage() throws IOException {
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.bottom_sheet_lyric);
+        LyricsAdapter lyricsAdapter = new LyricsAdapter(getActivity(),arrayMusic.get(position).getFileSource());
+        RecyclerView rcvLyric = dialog.findViewById(R.id.lyrics_activity);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL,false);
+        rcvLyric.setLayoutManager(linearLayoutManager);
+        rcvLyric.setAdapter(lyricsAdapter);
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,1000);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
     private void shuffleMusic() {
         List<Music> resultList = new ArrayList<>();
@@ -432,7 +453,11 @@ public class PlayMusicFragment extends Fragment {
                 preSong();// Chuyển đến bài hát trước đó khi vuốt sang trái
             }
             if(e1.getY() - e2.getY() > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD){
-                openLyricPage();
+                try {
+                    openLyricPage();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
             return super.onFling(e1, e2, velocityX, velocityY);
         }

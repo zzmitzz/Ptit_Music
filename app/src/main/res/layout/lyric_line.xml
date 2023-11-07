@@ -12,8 +12,7 @@
         android:layout_centerVertical="true"
         tools:text = "Lyrics"
         android:padding="5dp"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textAlignment="center"
-        android:textSize="20dp"
-        ></TextView>
+        android:textSize="20dp"/>
 </RelativeLayout>

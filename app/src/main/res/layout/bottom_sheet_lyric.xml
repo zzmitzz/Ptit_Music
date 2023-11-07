@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0F0817"
+    android:background="@drawable/border_2"
     tools:context=".Activity.LyricsActivity"
     android:orientation="vertical"
     >
@@ -13,5 +13,5 @@
         android:id="@+id/lyrics_activity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="0dp" />
+        android:layout_marginTop="20dp" />
 </LinearLayout>
