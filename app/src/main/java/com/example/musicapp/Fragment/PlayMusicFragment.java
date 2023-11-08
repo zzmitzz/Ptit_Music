@@ -248,7 +248,7 @@ public class PlayMusicFragment extends Fragment {
         HistoryDataBase.getInstance(getContext()).historyDao().insertHistory(book);
         List<Book> list = HistoryDataBase.getInstance(getContext()).historyDao().getBookArray();
         if (list.size() > 10){
-            HistoryDataBase.getInstance(getContext()).historyDao().deleteBook(list.get(0));
+            HistoryDataBase.getInstance(getContext()).historyDao().deleteBook(list.get(list.size()-1));
         }
         setAdapter();
     }
