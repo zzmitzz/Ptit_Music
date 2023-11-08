@@ -88,7 +88,7 @@ public class MusicData {
         List<Music>resultList = new ArrayList<>();
         for (Music music : arrayMusic){
             for(Book book: books){
-                if(book.getId() == music.getId()){
+                if(book.getId().equals(music.getId())){
                     resultList.add(music);
                 }
             }
