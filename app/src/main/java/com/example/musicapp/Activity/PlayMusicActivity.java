@@ -238,6 +238,9 @@ public class PlayMusicActivity extends AppCompatActivity {
     private void updateNotification(int icon) {
         String tenNhac = arrayMusic.get(position).getTenNhac();
         String caSi = arrayMusic.get(position).getCaSi();
+        if(tenNhac.startsWith(caSi)){
+            tenNhac = tenNhac.substring(caSi.length()+3);
+        }
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), arrayMusic.get(position).getHinhNen());
 
         notificationBuilder.setContentTitle(tenNhac)
@@ -250,13 +253,18 @@ public class PlayMusicActivity extends AppCompatActivity {
         notificationManager.notify(1, notificationBuilder.build());
     }
     private void sendNotificationMedia() {
+        String tenNhac = arrayMusic.get(position).getTenNhac();
+        String caSi = arrayMusic.get(position).getCaSi();
+        if(tenNhac.startsWith(caSi)){
+            tenNhac = tenNhac.substring(caSi.length()+3);
+        }
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), arrayMusic.get(position).getHinhNen());
         MediaSessionCompat mediaSession = new MediaSessionCompat(this, "tag");
         notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_music_note)
                 .setSubText("Music App")
-                .setContentTitle(arrayMusic.get(position).getTenNhac())
-                .setContentText(arrayMusic.get(position).getCaSi())
+                .setContentTitle(tenNhac)
+                .setContentText(caSi )
                 .setLargeIcon(bitmap)
                 .addAction(R.drawable.ic_pre, "Previous", pendingPreviousIntent)
                 .addAction(R.drawable.ic_play, "PlayPause", pendingPlayPauseIntent)
