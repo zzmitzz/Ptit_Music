@@ -4,8 +4,11 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
+        android:name=".Application.MyApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -16,10 +19,9 @@
         android:theme="@style/Theme.MusicApp"
         tools:targetApi="31">
         <activity
-            android:name=".Activity.LyricsActivity"
+            android:name=".Activity.PlayMusicActivity"
             android:exported="false"
-            android:label="@string/title_activity_lyrics"
-            android:theme="@style/Theme.MusicApp" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.FlashActivity"
             android:exported="true">
@@ -32,10 +34,6 @@
         <activity
             android:name=".Activity.MusicianPlaylistActivity"
             android:exported="false" />
-        <activity
-            android:name=".Activity.PlayMusicActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"/>
         <activity
             android:name=".Activity.MainActivity"
             android:exported="false" />

@@ -18,10 +18,8 @@ import com.example.musicapp.Class.Book;
 import com.example.musicapp.Data.LibraryData;
 import com.example.musicapp.Class.Music;
 import com.example.musicapp.Data.MusicData;
-import com.example.musicapp.Fragment.PlayMusicFragment;
 import com.example.musicapp.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder>{
@@ -63,7 +61,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             Intent it = new Intent(mContext, PlayMusicActivity.class);
             List<Book>books = LibraryData.getFavlist();
             List<Music> arrayMusic = MusicData.getMusicList(books);
-            PlayMusicFragment.setArrayMusic(arrayMusic);
+            PlayMusicActivity.setArrayMusic(arrayMusic);
             it.putExtra("position",MusicData.getPosition(book.getId(),arrayMusic) + "");
             mContext.startActivity(it);
         }
@@ -71,14 +69,13 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             Intent it = new Intent(mContext, PlayMusicActivity.class);
             List<Book>books = LibraryData.getHisList();
             List<Music> arrayMusic = MusicData.getMusicList(books);
-            PlayMusicFragment.setArrayMusic(arrayMusic);
+            PlayMusicActivity.setArrayMusic(arrayMusic);
             it.putExtra("position",MusicData.getPosition(book.getId(),arrayMusic) + "");
             mContext.startActivity(it);
         }
         if (book.getCategory().equals("musician")){
             Intent it = new Intent(mContext, MusicianPlaylistActivity.class);
             it.putExtra("musician",book.getTitle());
-            it.putExtra("parent","library");
             mContext.startActivity(it);
         }
     }

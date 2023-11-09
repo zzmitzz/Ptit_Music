@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.musicapp.Activity.MainActivity;
 import com.example.musicapp.Activity.PlayMusicActivity;
 import com.example.musicapp.Data.MusicData;
-import com.example.musicapp.Fragment.PlayMusicFragment;
 import com.example.musicapp.Class.Music;
 import com.example.musicapp.R;
 import java.util.List;
@@ -82,13 +81,13 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHol
         Intent it = new Intent(context , PlayMusicActivity.class);
         List<Music>list = MusicData.getArrayMusic();
         if(context.equals(MainActivity.getContext())){
-            PlayMusicFragment.setArrayMusic(list);
+            PlayMusicActivity.setArrayMusic(list);
             it.putExtra("position", MusicData.getPosition(music.getId(),list) + "");
             context.startActivity(it);
         }
         else{
             list = MusicData.musicianList(music.getCaSi());
-            PlayMusicFragment.setArrayMusic(list);
+            PlayMusicActivity.setArrayMusic(list);
             it.putExtra("position",MusicData.getPosition(music.getId(),list) + "");
             context.startActivity(it);
         }

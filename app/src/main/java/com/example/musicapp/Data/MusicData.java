@@ -1,15 +1,13 @@
 package com.example.musicapp.Data;
 
 import com.example.musicapp.Activity.FlashActivity;
-import com.example.musicapp.Activity.MainActivity;
 import com.example.musicapp.Class.Book;
 import com.example.musicapp.Class.Item;
 import com.example.musicapp.Class.Music;
-import com.example.musicapp.Class.NlpUtils;
+import com.example.musicapp.Function.NlpUtils;
 import com.example.musicapp.DataBase.ItemDataBase;
 import com.example.musicapp.R;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;

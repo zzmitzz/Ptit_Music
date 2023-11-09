@@ -8,11 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +24,6 @@ import com.example.musicapp.Class.Musician;
 import com.example.musicapp.Data.MusicianData;
 import com.example.musicapp.DataBase.ItemDataBase;
 import com.example.musicapp.Fragment.LibraryFragment;
-import com.example.musicapp.Fragment.PlayMusicFragment;
 import com.example.musicapp.Fragment.SearchFragment;
 import com.example.musicapp.R;
 
@@ -42,7 +38,6 @@ public class MusicianPlaylistActivity extends AppCompatActivity{
     private RecyclerView rcvMusic;
     private static List<Music> arrayMusic;
     private static MusicAdapter adapter;
-    private String parentPage;
     private static Context context;
     private ImageButton btnPlay,backBtn,favBtn;
     public static Context getContext(){
@@ -71,7 +66,6 @@ public class MusicianPlaylistActivity extends AppCompatActivity{
 
         String id = it.getStringExtra("musician");
         String musicianName = it.getStringExtra("musician");
-        parentPage = it.getStringExtra("parent");
 
         Musician musician = MusicianData.getMusicianHashMap().get(id);
         arrayMusic = MusicData.musicianList(musicianName);
@@ -97,7 +91,7 @@ public class MusicianPlaylistActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 if (arrayMusic.size() != 0){
-                    PlayMusicFragment.setArrayMusic(arrayMusic);
+                    PlayMusicActivity.setArrayMusic(arrayMusic);
                     Intent intent = new Intent(MusicianPlaylistActivity.this,PlayMusicActivity.class);
                     intent.putExtra("position",0 + "");
                     startActivity(intent);
@@ -199,10 +193,6 @@ public class MusicianPlaylistActivity extends AppCompatActivity{
     }
     @Override
     public void onBackPressed() {
-        if (parentPage.equals("home")){
-            Intent it = new Intent(this, MainActivity.class);
-            startActivity(it);
-        }
         super.onBackPressed();
     }
 }

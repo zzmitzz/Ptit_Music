@@ -62,7 +62,6 @@ public class MusicianAdapter extends RecyclerView.Adapter<MusicianAdapter.Musici
     private void onClickGoToDetail(Musician musician){
         Intent it = new Intent(context, MusicianPlaylistActivity.class);
         it.putExtra("musician",musician.getName());
-        it.putExtra("parent","home");
         context.startActivity(it);
     }
     @Override

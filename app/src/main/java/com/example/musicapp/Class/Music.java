@@ -1,18 +1,7 @@
 package com.example.musicapp.Class;
 
-import android.content.Context;
-import android.content.res.AssetManager;
+import com.example.musicapp.Function.NlpUtils;
 
-import androidx.annotation.NonNull;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 public class Music implements Comparable<Music>{
 
     private String id;

@@ -1,29 +1,22 @@
 package com.example.musicapp.Fragment;
 
 import android.app.Activity;
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,14 +28,13 @@ import com.example.musicapp.Class.Item;
 import com.example.musicapp.Class.Music;
 import com.example.musicapp.Adapter.MusicAdapter;
 import com.example.musicapp.Activity.PlayMusicActivity;
-import com.example.musicapp.Class.NlpUtils;
+import com.example.musicapp.Function.NlpUtils;
 import com.example.musicapp.Data.LibraryData;
 import com.example.musicapp.Data.MusicData;
 import com.example.musicapp.DataBase.ItemDataBase;
 import com.example.musicapp.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 // Fragment chứa chức năng tìm kiếm âm nhạc
@@ -146,7 +138,7 @@ public class SearchFragment extends Fragment{
 
     // Phương thức để mở trang chơi âm nhạc
     private void openPlayPage(int i){
-        PlayMusicFragment.setArrayMusic(arrayMusic);
+        PlayMusicActivity.setArrayMusic(arrayMusic);
         it = new Intent(getActivity(),PlayMusicActivity.class);
         it.putExtra("position",i + "");// Truyền vị trí âm nhạc được chọn cho trang chơi âm nhạc
         startActivity(it);
