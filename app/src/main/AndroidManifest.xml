@@ -37,6 +37,16 @@
         <activity
             android:name=".Activity.MainActivity"
             android:exported="false" />
+        <service android:name=".Service.MusicService"/>
+        <receiver android:name=".Function.NotificationReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="NEXT"/>
+                <action android:name="PREVIOUS"/>
+                <action android:name="PLAY"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
