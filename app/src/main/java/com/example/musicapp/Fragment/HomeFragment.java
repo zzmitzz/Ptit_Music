@@ -41,7 +41,7 @@ public class HomeFragment extends Fragment {
         adapter = new MusicianAdapter();
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
         rcvMusician.setLayoutManager(staggeredGridLayoutManager);
-        List<Musician> musicianList = MusicianData.getRandomMusician();
+        List<Musician> musicianList = MusicianData.getMusicianList();
         adapter.setData(getActivity(), musicianList);
         rcvMusician.setAdapter(adapter);
         return view;

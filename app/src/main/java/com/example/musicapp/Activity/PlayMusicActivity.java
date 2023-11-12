@@ -77,6 +77,7 @@ public class PlayMusicActivity extends AppCompatActivity implements ServiceConne
     private static List<Music> arrayMusic;
     private int position;
     private boolean replay = false;
+    private boolean isServiceBound = false;
     private GestureDetector gestureDetector;
     private MusicService musicService;
     private MediaSessionCompat mediaSession;
@@ -92,23 +93,32 @@ public class PlayMusicActivity extends AppCompatActivity implements ServiceConne
         MusicService.MyBinder binder = (MusicService.MyBinder) service;
         musicService = binder.getService();
         musicService.setCallBack(PlayMusicActivity.this);
+        isServiceBound = true;
     }
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
         musicService = null;
+        isServiceBound = false;
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        unbindService(this);
+        if (isServiceBound) {
+            unbindService(this);
+            isServiceBound = false;
+        }
     }
 
     @Override
     protected void onDestroy() {
         if(mediaPlayer != null && mediaPlayer.isPlaying()){
             mediaPlayer.stop();
+        }
+        if (isServiceBound) {
+            unbindService(this);
+            isServiceBound = false;
         }
         super.onDestroy();
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
@@ -291,7 +301,7 @@ public class PlayMusicActivity extends AppCompatActivity implements ServiceConne
         rcvLyric.setLayoutManager(linearLayoutManager);
         rcvLyric.setAdapter(lyricsAdapter);
         dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,1500);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,1000);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
