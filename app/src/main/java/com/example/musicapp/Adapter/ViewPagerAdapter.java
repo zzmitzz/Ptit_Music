@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+import com.example.musicapp.Fragment.FinderFragment;
 import com.example.musicapp.Fragment.LibraryFragment;
 import com.example.musicapp.Fragment.HomeFragment;
 import com.example.musicapp.Fragment.SearchFragment;
@@ -25,12 +26,13 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         if(position == 0) return new HomeFragment();// Màn hình chính (HomeFragment)
         if(position == 1) return new SearchFragment();// Màn hình tìm kiếm (SearchFragment)
         if(position == 2) return new LibraryFragment();// Màn hình thư viện (LibraryFragment)
+        if(position == 3) return new FinderFragment();
         return new HomeFragment();// Trường hợp mặc định, trả về HomeFragment()
     }
 
     // Phương thức để lấy số lượng fragment trong ViewPager
     @Override
     public int getCount() {
-        return 3;// Có tổng cộng 3 fragment trong ViewPager
+        return 4;// Có tổng cộng 4 fragment trong ViewPager
     }
 }

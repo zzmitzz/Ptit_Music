@@ -110,9 +110,9 @@ public class PlayMusicActivity extends AppCompatActivity implements ServiceConne
         if(mediaPlayer != null && mediaPlayer.isPlaying()){
             mediaPlayer.stop();
         }
+        super.onDestroy();
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
-        super.onDestroy();
     }
 
     @Override
@@ -235,8 +235,6 @@ public class PlayMusicActivity extends AppCompatActivity implements ServiceConne
         });
     }
     public void showNotification(int icon){
-        Intent intent = new Intent(this,PlayMusicActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this,0,intent, PendingIntent.FLAG_IMMUTABLE);
         Intent prevIntent = new Intent(this, NotificationReceiver.class).setAction(ACTION_PREV);
         PendingIntent prevPendingIntent = PendingIntent.getBroadcast(this,0,prevIntent,PendingIntent.FLAG_UPDATE_CURRENT);
         Intent playIntent = new Intent(this, NotificationReceiver.class).setAction(ACTION_PLAY);
@@ -256,8 +254,9 @@ public class PlayMusicActivity extends AppCompatActivity implements ServiceConne
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                         .setMediaSession(mediaSession.getSessionToken()))
                 .setPriority(NotificationCompat.PRIORITY_LOW)
-                .setContentIntent(contentIntent)
+                .setSound(null)
                 .setOnlyAlertOnce(true)
+                .setContentIntent(null)
                 .build();
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(0,notification);
@@ -292,7 +291,7 @@ public class PlayMusicActivity extends AppCompatActivity implements ServiceConne
         rcvLyric.setLayoutManager(linearLayoutManager);
         rcvLyric.setAdapter(lyricsAdapter);
         dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,1000);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,1500);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
@@ -494,6 +493,38 @@ public class PlayMusicActivity extends AppCompatActivity implements ServiceConne
 
     private void setMusicPlayImage() {
         // Đặt hình ảnh của bài hát hiện tại lên giao diện
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),arrayMusic.get(position).getHinhNen());
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int[] pixels = new int[width * height];
+        bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
+        int sumRed = 0;
+        int sumGreen = 0;
+        int sumBlue = 0;
+        for (int pixel : pixels) {
+            sumRed += Color.red(pixel);
+            sumGreen += Color.green(pixel);
+            sumBlue += Color.blue(pixel);
+        }
+        int averageRed = sumRed / pixels.length;
+        int averageGreen = sumGreen / pixels.length;
+        int averageBlue = sumBlue / pixels.length;
+
+        int dominantColor = Color.rgb(averageRed, averageGreen, averageBlue);
+        int referenceColor = Color.parseColor("#CCCCCC");
+
+        float[] hsvA = new float[3];
+        float[] hsvB = new float[3];
+        Color.colorToHSV(dominantColor , hsvA);
+        Color.colorToHSV(referenceColor, hsvB);
+
+        if(hsvA[2] > 0.75 * hsvB[2]){
+            float[] hsv = new float[3];
+            Color.colorToHSV(dominantColor, hsv);
+            hsv[2] *= 0.2;
+            dominantColor = Color.HSVToColor(hsv);
+        }
+        playMusicLayout.setBackgroundColor(dominantColor);
         musicImage.setImageResource(arrayMusic.get(position).getHinhNen());
     }
 

@@ -51,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
                 if(item.getItemId() == R.id.action_library){
                     viewPager.setCurrentItem(2);
                 }
+                if(item.getItemId() == R.id.action_finder){
+                    viewPager.setCurrentItem(3);
+                }
                 return true;
             }
         });
@@ -78,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if(position == 2){
                     navigationView.getMenu().findItem(R.id.action_library).setChecked(true);
+                }
+                if(position == 3){
+                    navigationView.getMenu().findItem(R.id.action_finder).setChecked(true);
                 }
             }
 

@@ -72,5 +72,6 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:2.6.0")
     testImplementation("androidx.room:room-testing:2.6.0")
     debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation("com.google.code.gson:gson:2.9.0")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }

@@ -10,4 +10,7 @@
     <item android:id="@+id/action_library"
         android:title="@string/action_library"
         android:icon="@drawable/ic_library" />
+    <item android:id="@+id/action_finder"
+        android:title="PtitFinder"
+        android:icon="@drawable/ic_library" />
 </menu>
