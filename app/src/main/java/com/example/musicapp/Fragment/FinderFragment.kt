@@ -11,6 +11,7 @@ import android.os.Environment
 import android.os.Handler
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -87,20 +88,33 @@ class FinderFragment : Fragment() {
                     if(status.equals("Success")){
                         textView.text = status
                         textView.setTextColor(Color.Green.toArgb())
-                        val nameMusic = metadata.metadata.music[0].title
+                        var nameMusic = metadata.metadata.music[0].title
+                        if(nameMusic == null){
+                            nameMusic = "Unknown"
+                        }
                         var text1: TextView = view.findViewById(R.id.textView)
                         var text2: TextView = view.findViewById(R.id.textView2)
                         var text3: TextView = view.findViewById(R.id.textView3)
                         text1.text = "Title: "+nameMusic
-                        val artist = metadata.metadata.music[0].artists[0].name
+                        var artist = metadata.metadata.music[0].artists[0].name
+                        if(artist == null){
+                            artist = "Unknown"
+                        }
                         text2.text = "Artist: "+artist
-                        val ytLink = metadata.metadata.music[0].externalMetadata.youtube.vid
-                        text3.text = "Youtube: "+ytLink
+                        var ytLink: String
+                        try{
+                            ytLink = metadata.metadata.music[0].externalMetadata.youtube.vid
+                        }catch (e: Exception){
+                            ytLink  = "Unknown"
+                        }
+
+                        text3.text = "Youtube: " + ytLink
                         var ytbIcon : ImageButton = view.findViewById(R.id.imageButton)
                         ytbIcon.setOnClickListener{
+                            if(!ytLink.equals("Unknown")){
                             val browserIntent =
                                 Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=$ytLink"))
-                            startActivity(browserIntent)
+                            startActivity(browserIntent)}
                         }
                     }
                     else{
