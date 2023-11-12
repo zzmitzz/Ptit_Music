@@ -12,5 +12,5 @@
         android:icon="@drawable/ic_library" />
     <item android:id="@+id/action_finder"
         android:title="PtitFinder"
-        android:icon="@drawable/ic_library" />
+        android:icon="@drawable/ic_mic" />
 </menu>

@@ -29,7 +29,13 @@ public class MusicService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String actionName = intent.getStringExtra("actionName");
+        String actionName;
+        try {
+            actionName = intent.getStringExtra("actionName");
+        }
+        catch (Exception ex){
+            actionName = null;
+        }
         if(actionName != null) {
             switch (actionName) {
                 case ACTION_NEXT:

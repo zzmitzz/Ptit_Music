@@ -23,6 +23,8 @@ public class MusicianData {
         musicianList.add(new Musician(R.drawable.mc02_denvau,R.drawable.mc02_denvau2,"Đen Vâu"));
         musicianList.add(new Musician(R.drawable.mc03_imagedragons,R.drawable.mc03_imagedragons,"Imagine Dragons"));
         musicianList.add(new Musician(R.drawable.mc04_sontung,R.drawable.mc04_sontung,"Sơn Tùng M-TP"));
+        musicianList.add(new Musician(R.drawable.mc05_bui_anh_tuan,R.drawable.mc05_bui_anh_tuan,"Bùi Anh Tuấn"));
+        musicianList.add(new Musician(R.drawable.mc06_vu,R.drawable.mc06_vu,"Vũ"));
 
 
         for(Musician musician : musicianList){
