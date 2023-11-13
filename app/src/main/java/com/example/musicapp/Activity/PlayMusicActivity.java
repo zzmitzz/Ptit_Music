@@ -24,11 +24,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaMetadata;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
+import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -142,28 +145,13 @@ public class PlayMusicActivity extends AppCompatActivity implements ServiceConne
         setFavButton();
 
         // Xử lý sự kiện khi nút Play/Pause được nhấn
-        playPauseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                playPauseButtonClick();
-            }
-        });
+        playPauseButton.setOnClickListener(view -> playPauseButtonClick());
 
         // Xử lý sự kiện khi nút Next được nhấn
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                nextSong();
-            }
-        });
+        nextButton.setOnClickListener(view -> nextSong());
 
         // Xử lý sự kiện khi nút Previous được nhấn
-        preButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                preSong();
-            }
-        });
+        preButton.setOnClickListener(view -> preSong());
 
         // Xử lý sự kiện khi người dùng thay đổi vị trí trên SeekBar
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -193,64 +181,43 @@ public class PlayMusicActivity extends AppCompatActivity implements ServiceConne
         });
 
         // Xử lý sự kiện khi nút Replay được nhấn
-        replayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (replay) {
-                    replayButton.setImageResource(R.drawable.ic_replay_1);
-                    replay = false;
-                } else {
-                    replayButton.setImageResource(R.drawable.ic_replay_2);
-                    replay = true;
-                }
+        replayButton.setOnClickListener(view -> {
+            if (replay) {
+                replayButton.setImageResource(R.drawable.ic_replay_1);
+                replay = false;
+            } else {
+                replayButton.setImageResource(R.drawable.ic_replay_2);
+                replay = true;
             }
         });
-        favBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                favBtnClick();
-            }
-        });
-        shuffleBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shuffleMusic();
-            }
-        });
-        btnOpenLyric.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    openLyricPage();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
+        favBtn.setOnClickListener(v -> favBtnClick());
+
+        shuffleBtn.setOnClickListener(v -> shuffleMusic());
+
+        btnOpenLyric.setOnClickListener(v -> {
+            try {
+                openLyricPage();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         });
 
+        backBtn.setOnClickListener(v -> onBackPressed());
+
         // Thiết lập Gesture Detector để nhận diện cử chỉ vuốt trên màn hình
         gestureDetector = new GestureDetector(this, new MyGesture());
-        playMusicLayout.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                gestureDetector.onTouchEvent(motionEvent);
-                return true;
-            }
+        playMusicLayout.setOnTouchListener((view, motionEvent) -> {
+            gestureDetector.onTouchEvent(motionEvent);
+            return true;
         });
     }
     public void showNotification(int icon){
         Intent prevIntent = new Intent(this, NotificationReceiver.class).setAction(ACTION_PREV);
-        PendingIntent prevPendingIntent = PendingIntent.getBroadcast(this,0,prevIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent prevPendingIntent = PendingIntent.getBroadcast(this,0,prevIntent,PendingIntent.FLAG_IMMUTABLE);
         Intent playIntent = new Intent(this, NotificationReceiver.class).setAction(ACTION_PLAY);
-        PendingIntent playPendingIntent = PendingIntent.getBroadcast(this,0,playIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent playPendingIntent = PendingIntent.getBroadcast(this,0,playIntent,PendingIntent.FLAG_IMMUTABLE);
         Intent nextIntent = new Intent(this, NotificationReceiver.class).setAction(ACTION_NEXT);
-        PendingIntent nextPendingIntent = PendingIntent.getBroadcast(this,0,nextIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent nextPendingIntent = PendingIntent.getBroadcast(this,0,nextIntent,PendingIntent.FLAG_IMMUTABLE);
         Bitmap picture = BitmapFactory.decodeResource(getResources(),arrayMusic.get(position).getHinhNen());
 
         Notification notification = new NotificationCompat.Builder(this,CHANNEL_ID_2)
@@ -262,12 +229,18 @@ public class PlayMusicActivity extends AppCompatActivity implements ServiceConne
                 .addAction(icon,"Play",playPendingIntent)
                 .addAction(R.drawable.ic_next,"Next",nextPendingIntent)
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
+                        .setShowActionsInCompactView(0,1,2)
                         .setMediaSession(mediaSession.getSessionToken()))
                 .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setSound(null)
                 .setOnlyAlertOnce(true)
                 .setContentIntent(null)
                 .build();
+        mediaSession.setMetadata(new MediaMetadataCompat.Builder()
+                .putString(MediaMetadata.METADATA_KEY_TITLE,"Song Title")
+                .putString(MediaMetadata.METADATA_KEY_ARTIST,"Artist")
+                .build());
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(0,notification);
 
@@ -301,7 +274,9 @@ public class PlayMusicActivity extends AppCompatActivity implements ServiceConne
         rcvLyric.setLayoutManager(linearLayoutManager);
         rcvLyric.setAdapter(lyricsAdapter);
         dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,1000);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,displayMetrics.heightPixels*7/10);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
@@ -531,7 +506,7 @@ public class PlayMusicActivity extends AppCompatActivity implements ServiceConne
         if(hsvA[2] > 0.75 * hsvB[2]){
             float[] hsv = new float[3];
             Color.colorToHSV(dominantColor, hsv);
-            hsv[2] *= 0.2;
+            hsv[2] *= 0.5;
             dominantColor = Color.HSVToColor(hsv);
         }
         playMusicLayout.setBackgroundColor(dominantColor);
