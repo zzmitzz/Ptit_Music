@@ -22,7 +22,7 @@
             android:inputType="text"
             android:imeOptions="actionSearch"
             android:textColor="@color/white"
-            android:hint="Tìm kiếm"
+            android:hint="Search"
             android:textColorHint="@color/white"
             android:layout_marginBottom="5dp"
             android:drawableLeft="@drawable/ic_search_music"

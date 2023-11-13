@@ -39,9 +39,9 @@ public class LibraryFragment extends Fragment {
         List<Book> historyList = LibraryData.getHisList();
 
         List<Category> categories = new ArrayList<>();
-        categories.add(new Category("Ca sĩ yêu thích", musicianList,"library"));
-        categories.add(new Category("Bài hát yêu thích", musicList,"library"));
-        categories.add(new Category("Lịch sử phát", historyList,"library"));
+        categories.add(new Category("Favourite Artist", musicianList,"library"));
+        categories.add(new Category("Favourite Song", musicList,"library"));
+        categories.add(new Category("History", historyList,"library"));
         return categories;
     }
 
