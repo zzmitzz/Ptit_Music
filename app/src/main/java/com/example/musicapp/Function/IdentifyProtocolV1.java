@@ -155,7 +155,7 @@ public class IdentifyProtocolV1 {
         return res;
     }
 
-    public static String execute(String path) {
+    public static String execute(String path, String host, String key, String password) {
         File file = new File(path);
         byte[] buffer = new byte[1024 * 1024];
         if (!file.exists()) {
@@ -189,7 +189,7 @@ public class IdentifyProtocolV1 {
 
         // Replace "###...###" below with your project's host, access_key and access_secret.
         // recognize(String host, String accessKey, String secretKey, byte[] queryData, String queryType, int timeout)
-        String result = a.recognize("identify-ap-southeast-1.acrcloud.com", "29e5ae6edad071fefe774a744c2e49e2", "dcCopbQbRxoQtdS2WCaATBDV3zgl4wyOjyLhCP2J", postDatas, "audio", 10000);
+        String result = a.recognize(host,key,password, postDatas, "audio", 10000);
 
         return result;
     }

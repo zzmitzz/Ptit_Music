@@ -11,75 +11,55 @@
         android:id="@+id/first"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="P Music Finder"
+        android:paddingTop="20dp"
+        android:text="PMusic Finder"
+        android:textAlignment="center"
+
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/notification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="This feature is developed with ArcCloud API which is paid solution, then you need to log your API got from ArcCloud."
         android:textAlignment="center"
         android:textColor="@color/white"
-
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:paddingTop="20dp"
-        android:textSize="30sp"
-        android:textStyle="bold"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/first"></TextView>
 
     <!-- Second Line -->
-    <TextView
-        android:id="@+id/textView5"
+    <Button
+        android:id="@+id/ApiLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="12dp"
-        android:paddingStart="14dp"
-        android:text="Step 1: Click the Ptit icon"
-        android:textColor="@color/white"
-        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@+id/notification"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/first" />
+        android:layout_marginTop="20dp"
+        android:text = "API Login"
+        android:textSize="15dp"
+        />
 
-    <!-- Third Line -->
-
-    <!-- Fourth Line -->
-
-    <!-- Rounded Button -->
-
-
-    <!-- Status TextView -->
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="12dp"
-        android:paddingStart="14dp"
-
-        android:text="Step 2: Play rhythm you want to recognize"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
-
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="12dp"
-        android:text="Step 3: After 5-10s, Click icon again and pray for the result"
-        android:paddingStart="14dp"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <ImageButton
         android:id="@+id/recordButton"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_marginTop="50dp"
         android:background="@null"
         android:scaleType="fitCenter"
         android:src="@mipmap/ic_launcher"
+        android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7"></ImageButton>
+        app:layout_constraintTop_toBottomOf="@+id/ApiLogin"></ImageButton>
 
     <TextView
         android:id="@+id/neh"
@@ -97,20 +77,20 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:text="Music Name: "
+        android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="18dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        app:layout_constraintTop_toBottomOf="@+id/neh" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:textAlignment="center"
         android:text="Youtube: "
         android:textColor="@color/white"
         android:textSize="18dp"
@@ -125,6 +105,7 @@
         android:layout_marginTop="20dp"
         android:text="Artist: "
         android:textColor="@color/white"
+        android:textAlignment="center"
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -138,7 +119,7 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <ImageButton
         android:id="@+id/imageButton"

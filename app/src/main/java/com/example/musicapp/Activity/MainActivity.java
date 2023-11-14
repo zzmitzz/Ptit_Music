@@ -95,14 +95,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public void onBackPressed() {
-        // Kiểm tra trạng thái của ô tìm kiếm trong SearchFragment và xử lý nút Back
-        SearchView searchView = SearchFragment.getSearchView();
-        if(!searchView.isIconified()){
-            searchView.setIconified(true);// Tắt ô tìm kiếm
-            return;
-        }
-        super.onBackPressed();// Xử lý nút Back theo cách mặc định
-    }
+//    @Override
+//    public void onBackPressed() {
+//        // Kiểm tra trạng thái của ô tìm kiếm trong SearchFragment và xử lý nút Back
+//        SearchView searchView = SearchFragment.getSearchView();
+//        if(searchView != null && !searchView.isIconified()){
+//            searchView.setIconified(true);// Tắt ô tìm kiếm
+//            return;
+//        }
+//        super.onBackPressed();// Xử lý nút Back theo cách mặc định
+//    }
 }
