@@ -84,6 +84,7 @@ public class PlayMusicActivity extends AppCompatActivity implements ServiceConne
     private GestureDetector gestureDetector;
     private MusicService musicService;
     private MediaSessionCompat mediaSession;
+    private Dialog dialog;
     private int SWIPE_THRESHOLD = 300;
     private int SWIPE_VELOCITY_THRESHOLD = 100;
 
@@ -265,7 +266,7 @@ public class PlayMusicActivity extends AppCompatActivity implements ServiceConne
     }
 
     private void openLyricPage() throws IOException {
-        final Dialog dialog = new Dialog(this);
+        dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.bottom_sheet_lyric);
         LyricsAdapter lyricsAdapter = new LyricsAdapter(this,arrayMusic.get(position).getFileSource());
@@ -388,6 +389,7 @@ public class PlayMusicActivity extends AppCompatActivity implements ServiceConne
         playPauseButton.setImageResource(R.drawable.ic_pause);
         mediaPlayer.start();
         showNotification(R.drawable.ic_pause);
+        dialog.cancel();
     }
 
     // Phương thức để chuyển đến bài hát trước đó trong danh sách
@@ -412,6 +414,7 @@ public class PlayMusicActivity extends AppCompatActivity implements ServiceConne
         playPauseButton.setImageResource(R.drawable.ic_pause);
         mediaPlayer.start();
         showNotification(R.drawable.ic_pause);
+        dialog.cancel();
     }
 
     // Phương thức để thiết lập rotate animation
