@@ -389,7 +389,9 @@ public class PlayMusicActivity extends AppCompatActivity implements ServiceConne
         playPauseButton.setImageResource(R.drawable.ic_pause);
         mediaPlayer.start();
         showNotification(R.drawable.ic_pause);
-        dialog.cancel();
+        if(dialog != null){
+            dialog.cancel();
+        }
     }
 
     // Phương thức để chuyển đến bài hát trước đó trong danh sách
@@ -414,7 +416,9 @@ public class PlayMusicActivity extends AppCompatActivity implements ServiceConne
         playPauseButton.setImageResource(R.drawable.ic_pause);
         mediaPlayer.start();
         showNotification(R.drawable.ic_pause);
-        dialog.cancel();
+        if(dialog != null){
+            dialog.cancel();
+        }
     }
 
     // Phương thức để thiết lập rotate animation
