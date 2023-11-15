@@ -238,8 +238,8 @@ public class PlayMusicActivity extends AppCompatActivity implements ServiceConne
                 .setContentIntent(null)
                 .build();
         mediaSession.setMetadata(new MediaMetadataCompat.Builder()
-                .putString(MediaMetadata.METADATA_KEY_TITLE,"Song Title")
-                .putString(MediaMetadata.METADATA_KEY_ARTIST,"Artist")
+                .putString(MediaMetadata.METADATA_KEY_TITLE,arrayMusic.get(position).getTenNhac())
+                .putString(MediaMetadata.METADATA_KEY_ARTIST,arrayMusic.get(position).getCaSi())
                 .build());
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(0,notification);
